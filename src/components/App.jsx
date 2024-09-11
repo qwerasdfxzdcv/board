@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-const App = () => {
+
+const App = ({ posts, setPosts, setSelectedPost }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [posts, setPosts] = useState([]);
 
   const handleAddPost = () => {
     if (title && content) {
       setPosts([...posts, { title, content }]);
-      setTitle(''); 
+      setTitle('');
       setContent('');
     }
   };
@@ -38,7 +38,9 @@ const App = () => {
       <ul style={{ padding: '0', listStyle: 'none' }}>
         {posts.map((post, index) => (
           <li key={index} style={{ borderBottom: '1px solid #ccc', padding: '10px 0' }}>
-            <h4>{post.title}</h4>
+            <Link to="/borders" onClick={() => setSelectedPost(post)} style={{  color: 'black' }}>
+              <h4>{post.title}</h4>
+            </Link>
           </li>
         ))}
       </ul>
