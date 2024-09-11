@@ -6,8 +6,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Borders from './components/Borders.jsx';
 
 const Main = () => {
-  const [posts, setPosts] = useState([]);  // 게시글 리스트
-  const [selectedPost, setSelectedPost] = useState(null);  // 선택된 게시글
+  const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
 
   return (
     <Router>
@@ -17,8 +17,8 @@ const Main = () => {
           element={<App posts={posts} setPosts={setPosts} setSelectedPost={setSelectedPost} />} 
         />
         <Route 
-          path="/Borders" 
-          element={<Borders selectedPost={selectedPost} />} 
+          path="/Borders/:id" 
+          element={<Borders posts={posts} setPosts={setPosts} setSelectedPost={setSelectedPost} />}
         />
       </Routes>
     </Router>

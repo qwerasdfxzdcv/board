@@ -8,7 +8,25 @@ const App = ({ posts, setPosts, setSelectedPost }) => {
 
   const handleAddPost = () => {
     if (title && content) {
-      setPosts([...posts, { title, content }]);
+      let newId;
+      // ID 리스트를 정렬하고, 비어있는 가장 작은 ID 찾기
+      const idList = posts.map(post => post.id).sort((a, b) => a - b);
+      for (let i = 1; i <= idList.length; i++) {
+        if (!idList.includes(i)) {
+          newId = i; // 빈 ID를 찾으면 해당 ID를 사용
+          break;
+        }
+      }      
+      // 만약 빈 ID가 없으면 가장 큰 값 + 1을 사용
+      if (!newId) {
+        newId = idList.length + 1;
+      }  
+      const newPost = {
+        id: newId,  // 비어있는 가장 작은 ID 부여
+        title,
+        content
+      };
+      setPosts([...posts, newPost]);
       setTitle('');
       setContent('');
     }
@@ -31,16 +49,16 @@ const App = ({ posts, setPosts, setSelectedPost }) => {
         style={{ width: '100%', height: '100px', marginBottom: '10px', padding: '5px' }}
       />
       <button onClick={handleAddPost} style={{ width: '100%', padding: '10px' }}>
-        Add
+        등록
       </button>
 
       <h3>게시글 리스트</h3>
       <ul style={{ padding: '0', listStyle: 'none' }}>
-        {posts.map((post, index) => (
-          <li key={index} style={{ borderBottom: '1px solid #ccc', padding: '10px 0' }}>
-            <Link to="/borders" onClick={() => setSelectedPost(post)} style={{  color: 'black' }}>
+        {posts.map((post) => (
+          <li key={post.id} style={{ borderBottom: '1px solid #ccc', padding: '10px 0' }}>
+             <Link to={`/Borders/${post.id}`} onClick={() => setSelectedPost(post)} style={{ color: 'black' }}>
               <h4>{post.title}</h4>
-            </Link>
+             </Link>
           </li>
         ))}
       </ul>
