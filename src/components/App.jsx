@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { addBoard, getBoards } from '../api/borards';
 
 
-const App = ({ posts, setPosts, setSelectedPost }) => {
+const App = ({ getPosts, posts, setPosts, setSelectedPost }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
@@ -37,7 +37,13 @@ const App = ({ posts, setPosts, setSelectedPost }) => {
       setContent('');
     }
   };
-
+  
+  useEffect(()=>{
+    getPosts()
+  },[])
+  
+  console.log(posts)
+  if(!Array.isArray(posts)) return <h1>로딩</h1>
   return (
     <div style={{ padding: '20px', width: '300px', margin: '0 auto' }}>
       <Link to={'/Register'} >
@@ -62,7 +68,7 @@ const App = ({ posts, setPosts, setSelectedPost }) => {
 
       <h3>게시글 리스트</h3>
       <ul style={{ padding: '0', listStyle: 'none' }}>
-        {posts.map((post) => (
+        {posts?.map((post) => (
           <li key={post.id} style={{ borderBottom: '1px solid #ccc', padding: '10px 0' }}>
              <Link to={`/Borders/${post.id}`} onClick={() => setSelectedPost(post)} style={{ color: 'black' }}>
               <h4>{post.title}</h4>

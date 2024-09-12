@@ -24,7 +24,7 @@ const Main = () => {
       <Routes>
         <Route 
           path="/" 
-          element={<App posts={posts} setPosts={setPosts} setSelectedPost={setSelectedPost} />} 
+          element={<App posts={posts} setPosts={setPosts} getPosts={getPosts} setSelectedPost={setSelectedPost} />} 
         />
         <Route 
           path="/Borders/:id" 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { deleteBoard } from '../api/borards';
 
 const Borders = ({ posts, setPosts, setSelectedPost }) => {
   const { id } = useParams();
@@ -9,16 +10,6 @@ const Borders = ({ posts, setPosts, setSelectedPost }) => {
   const [editTitle, setEditTitle] = useState('');
   const [editContent, setEditContent] = useState('');
 
-  if (!selectedPost) {
-    return <div>
-      <h2>해당 게시글을 찾을 수 없습니다.</h2>
-      <Link to="/" style={{ color: 'black', textDecoration: 'none' }}>
-        <button>목록으로 돌아가기</button>
-      </Link>
-      </div>
-    
-    
-  }
   // 수정 모드로 전환
   const handleEditClick = () => {
     setIsEditing(true);
@@ -31,14 +22,12 @@ const Borders = ({ posts, setPosts, setSelectedPost }) => {
     const updatedPosts = posts.map((post) =>
       post.id === postId ? { ...post, title: editTitle, content: editContent } : post
     );
-    setPosts(updatedPosts);
     setIsEditing(false);
   };
 
   // 게시글 삭제
   const handleDeleteClick = () => {
-    const updatedPosts = posts.filter((post) => post.id !== postId);
-    setPosts(updatedPosts);
+    const updatedPosts = deleteBoard(selectedPost.id)
     setSelectedPost(null);  // 삭제 후 선택된 게시글 초기화
   };
 
@@ -68,9 +57,11 @@ const Borders = ({ posts, setPosts, setSelectedPost }) => {
           <button onClick={handleEditClick} style={{ width: '100%', padding: '10px', marginBottom: '10px' }}>
             수정
           </button>
+          <Link to={"/"}>
           <button onClick={handleDeleteClick} style={{ width: '100%', padding: '10px', marginBottom: '10px' }}>
             삭제
           </button>
+          </Link>
         </>
       )}
       <Link to="/" style={{ color: 'black', textDecoration: 'none' }}>
