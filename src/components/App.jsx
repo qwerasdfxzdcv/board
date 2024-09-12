@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { addBoard, getBoards } from '../api/borards';
 
 
 const App = ({ posts, setPosts, setSelectedPost }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-  const handleAddPost = () => {
+  const handleAddPost = async() => {
     if (title && content) {
       //아래 코드의 비효율적인 부분을 지우고 적은 코드 수로 변경
       const idList = posts.map(post => post.id).sort((a, b) => a - b);
-      const newId =  (idList.find((element)=>element > idList.indexOf(element)+1))-1 || idList.length + 1;
+      const id =  (idList.find((element)=>element > idList.indexOf(element)+1))-1 || idList.length + 1;
       /*let newId;
       // ID 리스트를 정렬하고, 비어있는 가장 작은 ID 찾기
       const idList = posts.map(post => post.id).sort((a, b) => a - b);
@@ -24,12 +25,14 @@ const App = ({ posts, setPosts, setSelectedPost }) => {
       if (!newId) {
         newId = idList.length + 1;
       }*/
-      const newPost = {
+      /*const newPost = {
         id: newId,  // 비어있는 가장 작은 ID 부여
         title,
         content
-      };
-      setPosts([...posts, newPost]);
+      };*/
+      const data = await addBoard({title,content})
+      const newPost = await getBoards();
+      setPosts([...newPost]);
       setTitle('');
       setContent('');
     }
@@ -37,6 +40,8 @@ const App = ({ posts, setPosts, setSelectedPost }) => {
 
   return (
     <div style={{ padding: '20px', width: '300px', margin: '0 auto' }}>
+      <Link to={'/Register'} >
+      <button>회원가입</button></Link>
       <h2>게시글 작성</h2>
       <input
         type="text"
