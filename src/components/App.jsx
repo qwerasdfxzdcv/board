@@ -8,6 +8,7 @@ const App = ({ posts, setPosts, setSelectedPost }) => {
 
   const handleAddPost = () => {
     if (title && content) {
+      //아래 코드의 비효율적인 부분을 지우고 적은 코드 수로 변경
       const idList = posts.map(post => post.id).sort((a, b) => a - b);
       const newId =  (idList.find((element)=>element > idList.indexOf(element)+1))-1 || idList.length + 1;
       /*let newId;
